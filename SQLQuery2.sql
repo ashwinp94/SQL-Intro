@@ -88,10 +88,22 @@ WHERE SongLength = (
 
 --11.Modify the previous query to also display the title of the album.
 
-SELECT ArtistName, Title, SongLength
+SELECT a.Title AS AlbumName, s.Title AS SongName, SongLength
+ FROM Song s LEFT JOIN Album a
+ ON s.AlbumId = a.Id
+ WHERE SongLength = ( SELECT MAX(SongLength)
+ From Song
+ )
+
+
+ --for fun including all the info for the longest song
+
+SELECT ar.ArtistName, a.Title as AlbumName, s.Title as SongName, SongLength
 FROM Song s
-JOIN Artist a 
-ON s.ArtistId = a.Id
+JOIN Artist ar 
+ON s.ArtistId = ar.Id
+join album a
+on s.AlbumId = a.id
 WHERE SongLength = (
     SELECT max(SongLength)
     FROM Song
